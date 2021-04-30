@@ -1,0 +1,125 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+       google()
+       jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.2'
+	classpath 'com.google.gms:google-services:4.3.4'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        {%- for repo in args.gradle_repositories %}
+        {{repo}}
+        {%- endfor %}
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+{% if is_library %}
+apply plugin: 'com.android.library'
+{% else %}
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+{% endif %}
+
+android {
+    compileSdkVersion {{ android_api }}
+    buildToolsVersion '{{ build_tools_version }}'
+    defaultConfig {
+        minSdkVersion {{ args.min_sdk_version }}
+        targetSdkVersion {{ android_api }}
+        versionCode {{ args.numeric_version }}
+        versionName '{{ args.version }}'
+        manifestPlaceholders = {{ args.manifest_placeholders}}
+    }
+
+	{% if debug_build -%}
+	packagingOptions {
+		doNotStrip '**/*.so'
+	}
+	{%- endif %}
+
+	{% if args.sign -%}
+	signingConfigs {
+		release {
+			storeFile file(System.getenv("P4A_RELEASE_KEYSTORE"))
+			keyAlias System.getenv("P4A_RELEASE_KEYALIAS")
+			storePassword System.getenv("P4A_RELEASE_KEYSTORE_PASSWD")
+			keyPassword System.getenv("P4A_RELEASE_KEYALIAS_PASSWD")
+		}
+	}
+
+    {%- endif %}
+
+    {% if args.packaging_options -%}
+    packagingOptions {
+        {%- for option in args.packaging_options %}
+        {{option}}
+        {%- endfor %}
+    }
+    {%- endif %}
+
+    buildTypes {
+        debug {
+        }
+        release {
+            {% if args.sign -%}
+            signingConfig signingConfigs.release
+            {%- endif %}
+        }
+    }
+
+    compileOptions {
+    	{% if args.enable_androidx %}
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+	{% else %}
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+	{% endif %}
+        {%- for option in args.compile_options %}
+        {{option}}
+        {%- endfor %}
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            java {
+
+                {%- for adir, pattern in args.extra_source_dirs -%}
+                    srcDir '{{adir}}'
+                {%- endfor -%}
+
+            }
+        }
+    }
+
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    {%- for aar in aars %}
+    implementation(name: '{{ aar }}', ext: 'aar')
+    {%- endfor -%}
+    {%- for jar in jars %}
+    implementation files('src/main/libs/{{ jar }}')
+    {%- endfor -%}
+    {%- if args.depends -%}
+    {%- for depend in args.depends %}
+    implementation '{{ depend }}'
+    {%- endfor %}
+    {%- endif %}
+    {% if args.presplash_lottie %}
+    implementation 'com.airbnb.android:lottie:3.4.0'
+    {%- endif %}
+}
+
