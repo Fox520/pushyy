@@ -17,7 +17,6 @@ Credits
 Usage Overview
 --------------
 ```python
-from kivy.app import App
 from pushyy import Pushyy
 
 # Get device token
@@ -105,4 +104,4 @@ NB: File name must be python_notification_handler.py
 
 Limitations
 --------------
-- Notification data/content is not available. For those curious, left a comment about it [here](https://github.com/Fox520/pushyy/blob/main/src/python/pushyy.py#L169)
+- Notification data/content is not available. For those curious, left a comment about it [here](https://github.com/Fox520/pushyy/blob/main/src/python/pushyy.py#L168)
