@@ -5,14 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.Gson;
-
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
-import static org.kivy.plugins.messaging.PlatformIntermediate.backgroundMessages;
 
 public class KivyFirebaseMessagingReceiver extends BroadcastReceiver {
     private static final String TAG = "FLTFireMsgReceiver";
@@ -54,34 +49,14 @@ public class KivyFirebaseMessagingReceiver extends BroadcastReceiver {
 //        String json = gson.toJson(payload);
 //        backgroundMessages.put(Math.random()+"",json);
 //        com.waterfall.youtube.ServicePythonnotificationhandler.start(org.kivy.android.PythonActivity.mActivity, json);
-        // Issue with above is that Python service does not start when app is killed
-        // Update: Found that the following exception was being thrown
-        // https://stackoverflow.com/questions/28515049/android-content-context-getpackagename-on-a-null-object-reference
-        // Fixed the issue by retrieving the context required by the Python service from
-        // the ContextHolder class, instead of PythonActivity.
-        // For the sake of it, I'll continue with the approach below
+        // Issue with above is it relies on the Python service to be not running. Moment it's already running and you try starting
+        // it, Android won't allow that.
+
         Intent onBackgroundMessageIntent =
                 new Intent(context, org.kivy.plugins.messaging.KivyFirebaseMessagingBackgroundService.class);
         onBackgroundMessageIntent.putExtra(
                 KivyFirebaseMessagingUtils.EXTRA_REMOTE_MESSAGE, remoteMessage);
         org.kivy.plugins.messaging.KivyFirebaseMessagingBackgroundService.enqueueMessageProcessing(
                 context, onBackgroundMessageIntent);
-//        MyThread thread = new MyThread();
-//        thread.start();
-
-    }
-}
-class MyThread extends Thread {
-//private PlatformIntermediate pi;
-    public void run(){
-//        pi = new PlatformIntermediate();
-        while (true){
-            try {
-                PlatformIntermediate.getBackgroundMessages();
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

@@ -5,7 +5,6 @@ from kivy.clock import Clock, mainthread
 from jnius import autoclass, java_method, PythonJavaClass
 
 class Pushyy:
-    # TODO: create listener for new device token
     __notification_click_callback = None
     __last_on_message_key = None
     __token = None
@@ -38,7 +37,7 @@ class Pushyy:
         PlatformIntermediate = autoclass("org.kivy.plugins.messaging.PlatformIntermediate")
         data = PlatformIntermediate.getForegroundMessage()
         msg = json.loads(data)
-        # Avoid "process" an already "processed" message
+        # Avoid "processing" an already "processed" message
         if len(msg) == 0 or msg.get("unique_key") == self.__last_on_message_key:
             pass
         else:

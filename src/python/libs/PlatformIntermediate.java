@@ -1,9 +1,7 @@
 package org.kivy.plugins.messaging;
 
 import android.util.Log;
-
 import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
 

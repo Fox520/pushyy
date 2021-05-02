@@ -2,14 +2,13 @@ from jnius import autoclass, java_method, PythonJavaClass
 
 from kivy.app import App
 from kivy.uix.button import Button
-import utils
+
 from kivy.lang.builder import Builder
 from kivy.properties import DictProperty
 from kivy.properties import ObjectProperty
 from pushyy import Pushyy
 
 KV = '''
-#:import utils utils
 BoxLayout:
     orientation: "vertical"
     ScrollableLabel:
@@ -26,12 +25,8 @@ BoxLayout:
 
 class TestApp(App):
     recent_notification_data = DictProperty(rebind=True)
-    # Maintain reference to prevent Python gc the object. Without it we get something like
-    # AttributeError: 'list' object has no attribute 'invoke'
-    # alpha = ObjectProperty(utils.NewIntentListener())
 
     def on_start(self):
-        # utils.register_notification_click(self.alpha)
         Pushyy().foreground_message_handler(my_foreground_callback)
         Pushyy().notification_click_handler(my_notification_click_callback)
         # Couldn't fully test the token change listener
