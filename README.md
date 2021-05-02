@@ -12,6 +12,8 @@ Features
 Credits
 --------------
 - [Flutter Firebase Messaging](https://github.com/FirebaseExtended/flutterfire/tree/master/packages/firebase_messaging/firebase_messaging): The Java classes are from there
+
+        - Kindly create a PR correcting the copyright if it's wrong :)
 - [Electrum](https://github.com/spesmilo/electrum/tree/master/electrum) for the [onNewIntent](https://github.com/spesmilo/electrum/blob/6650e6bbae12a79e12667857ee039f1b1f30c7e3/electrum/gui/kivy/main_window.py#L620)
 
 Usage Overview
