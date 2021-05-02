@@ -54,9 +54,9 @@ Set up
 1. Clone [python-for-android](https://github.com/kivy/python-for-android)
 2. Open the file `pythonforandroid/bootstraps/common/build/templates/build.tmpl.gradle`
 3. Add the following:
-    a. Under `buildscript->dependencies` add `classpath 'com.google.gms:google-services:4.3.4'`
-    b. Below `apply plugin: 'com.android.application'` add `apply plugin: 'com.google.gms.google-services'`
-    c. Under `dependencies` add `implementation platform('com.google.firebase:firebase-bom:X.Y.Z')` (replace XYZ with the latest version from [here](https://firebase.google.com/docs/android/learn-more#bom))
+    - Under `buildscript->dependencies` add `classpath 'com.google.gms:google-services:4.3.4'`
+    - Below `apply plugin: 'com.android.application'` add `apply plugin: 'com.google.gms.google-services'`
+    - Under `dependencies` add `implementation platform('com.google.firebase:firebase-bom:X.Y.Z')` (replace XYZ with the latest version from [here](https://firebase.google.com/docs/android/learn-more#bom))
 4. Open the file `pythonforandroid/bootstraps/sdl2/build/templates/AndroidManifest.tmpl.xml`
 5. Before the `</application>` tag, add
 ```xml
@@ -80,14 +80,14 @@ Set up
 </receiver>
 ```
 6. Create a Firebase project [here](https://console.firebase.google.com/)
-    a. Add an Android app and skip the steps since we already did that at
-    b. Download the `google-services.json`
-    c. Move it to `pythonforandroid/bootstraps/common/build/` folder
+    - Add an Android app and skip the steps since we already did that at
+    - Download the `google-services.json`
+    - Move it to `pythonforandroid/bootstraps/common/build/` folder
 ##### Part 2
 1. Place [pushyy.py](src/python/pushyy.py) next to your `main.py`
 2. (Optional) To run a function when the application is in background or not running and notification is received:
-    a. Place [python_notification_handler.py](src/python/python_notification_handler.py) next to your `main.py`
-    b. Write your code in `my_background_callback()`
+    - Place [python_notification_handler.py](src/python/python_notification_handler.py) next to your `main.py`
+    - Write your code in `my_background_callback()`
 3. Place [libs/](src/python/libs) in the same folder as `buildozer.spec`
 4. In your `buildozer.spec` find and set:
 ```
@@ -100,12 +100,12 @@ services = PythonNotificationHandler:python_notification_handler.py
 NB: File name must be python_notification_handler.py
 ```
 5. Open `PlatformIntermediate.java` from your `libs/` folder:
-    a. If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
-    b. If you did not, delete the `com.waterfall.youtube...` line
+    - If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
+    - If you did not, delete the `com.waterfall.youtube...` line
 
 6. Open `KivyFirebaseMessagingBackgroundExecutor.java` from your `libs/` folder:
-    a. If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
-    b. If you did not, delete the `com.waterfall.youtube...` line
+    - If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
+    - If you did not, delete the `com.waterfall.youtube...` line
 
 Limitations
 --------------
