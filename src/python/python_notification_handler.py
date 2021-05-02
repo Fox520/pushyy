@@ -8,7 +8,7 @@ def my_background_callback(data: dict) -> None:
     One of the things you can do here: Mark a chat message
     as delivered by making a request to your server
     """
-    print(data)
+    print("2222222222", data)
     requests.post("http://192.168.0.171:5000/ac", json = data)
 
 if __name__ == '__main__':

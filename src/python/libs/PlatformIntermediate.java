@@ -9,7 +9,8 @@ import java.util.Map;
 
 public class PlatformIntermediate {
     private static HashMap<String, Object> _foregroundMessage = new HashMap<String, Object>();
-    public static HashMap<String, Object> backgroundMessages = new HashMap<String, Object>();
+    final public static HashMap<String, Object> backgroundMessages = new HashMap<String, Object>();
+    public static String token = "";
 
     public static String getForegroundMessage() {
         return new Gson().toJson(_foregroundMessage);
@@ -20,7 +21,7 @@ public class PlatformIntermediate {
         _foregroundMessage = copy;
 
         _foregroundMessage.put("unique_key", Math.random());
-        Log.d("PlatformIntermediate", "setForegroundMessage worked " + msg.toString());
+        Log.d("PlatformIntermediate", "setForegroundMessage worked " + _foregroundMessage.toString());
     }
 
     public static void addbackroundMessage(Map<String, Object> remoteMessageMap) {
@@ -30,7 +31,7 @@ public class PlatformIntermediate {
             Log.d("PlatformIntermediate","Exception occurred while trying to start service: "+e.getMessage());
         }
         backgroundMessages.put(remoteMessageMap.get("unique_key").toString(), remoteMessageMap);
-        Log.d("PlatformIntermediate", "New message added");
+        Log.d("PlatformIntermediate", "New message added, new map -> "+new Gson().toJson(backgroundMessages));
     }
 
     public static String getBackgroundMessages() {

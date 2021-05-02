@@ -34,6 +34,8 @@ class TestApp(App):
         # utils.register_notification_click(self.alpha)
         Pushyy().foreground_message_handler(my_foreground_callback)
         Pushyy().notification_click_handler(my_notification_click_callback)
+        # Couldn't fully test the token change listener
+        Pushyy().token_change_listener(new_token_callback)
 
     def get_token(self):
         Pushyy().get_device_token(my_token_callback)
@@ -51,5 +53,8 @@ def my_foreground_callback(data):
 def my_notification_click_callback(data):
     print(data)
     App.get_running_app().recent_notification_data = data
+
+def new_token_callback(data):
+    print(data)
 
 TestApp().run()

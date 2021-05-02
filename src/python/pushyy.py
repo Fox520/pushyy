@@ -8,6 +8,7 @@ class Pushyy:
     # TODO: create listener for new device token
     __notification_click_callback = None
     __last_on_message_key = None
+    __token = None
 
     def foreground_message_handler(self, callback: Callable[[dict], None], interval: float = 0.5) -> None:
         """Function to call when push notification is received
@@ -102,6 +103,39 @@ class Pushyy:
                 callback(s)
         FirebaseMessaging = autoclass('com.google.firebase.messaging.FirebaseMessaging')
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(MyTokenListener())
+    
+    def token_change_listener(self, callback: Callable[[dict], None], interval: float = 0.5) -> None:
+        """Function to call when device token changes
+        
+        Example
+        def new_token_callback(data: str):
+            print(data)
+
+        Parameters:
+        callback (function): Callback function reference
+        interval (float): How often to check for message
+
+        Returns:
+        None
+
+        """
+        @mainthread
+        def checker(*args):
+            try:
+                self.__on_new_token(callback)
+            except Exception as e:
+                print(e)
+        Clock.schedule_interval(checker, interval)
+    
+    def __on_new_token(self, callback):
+        PlatformIntermediate = autoclass("org.kivy.plugins.messaging.PlatformIntermediate")
+        token = PlatformIntermediate.token
+        # Overwriting an already read "token"
+        if len(token) == 0 or token == self.__token:
+            pass
+        else:
+            self.__token = token
+            callback(token)
 
 
 def process_background_messages(callback: Callable[[dict], None]):
@@ -119,24 +153,31 @@ def process_background_messages(callback: Callable[[dict], None]):
     None
 
     """
+    return callback({});
+    import time
+    time.sleep(1)
     try:
         PlatformIntermediate = autoclass("org.kivy.plugins.messaging.PlatformIntermediate")
-    except:
+    except Exception as e:
+        print(e)
         # 'Request to get environment variables before JNI is ready'
         # didn't look up how to check if it's ready, anyway
         import time
         time.sleep(1)
         PlatformIntermediate = autoclass("org.kivy.plugins.messaging.PlatformIntermediate")
-    # {"random_num_1": {"notification_one": "data"}, "random_num_2": {"notification_two": "data"}}
-    # TODO: returns empty dictionary
+
+    # TODO: This returns empty over jni ¯\_(ツ)_/¯
+    # Essentially, if you print backgroundMessages NOT over jni, the values are there
+    # but if its over jni they're not. It's as if a new instance of a static variable is created??
+    print(PlatformIntermediate.backgroundMessages.keySet().size())
+
     data = json.loads(PlatformIntermediate.getBackgroundMessages())
-    print(data)
+    print("111111111", data)
     # Go over HashMap
     for key, value in data.items():
         try:
-            # Remove notification before callback as it may throw an exception
+            # Remove notification before callback since that may throw an exception
             PlatformIntermediate.backgroundMessages.remove(key)
-            callback({"test": "value"})
             callback(value)
         except Exception as e:
             print(e)
