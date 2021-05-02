@@ -1,3 +1,4 @@
+// Copyright 2020 The Chromium Authors. All rights reserved.
 package org.kivy.plugins.messaging;
 
 import android.util.Log;
