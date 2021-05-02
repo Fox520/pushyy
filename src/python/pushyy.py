@@ -168,6 +168,7 @@ def process_background_messages(callback: Callable[[dict], None]):
     # TODO: This returns empty over jni ¯\_(ツ)_/¯
     # Essentially, if you print backgroundMessages NOT over jni, the values are there
     # but if its over jni they're not. It's as if a new instance of a static variable is created??
+    # Possible Hack: Save HashMap as json to file on the Java side and read it here
     print(PlatformIntermediate.backgroundMessages.keySet().size())
 
     data = json.loads(PlatformIntermediate.getBackgroundMessages())

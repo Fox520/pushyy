@@ -102,7 +102,10 @@ NB: File name must be python_notification_handler.py
     a. If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
     b. If you did not, delete the `com.waterfall.youtube...` line
 
+6. Open `KivyFirebaseMessagingBackgroundExecutor.java` from your `libs/` folder:
+    a. If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
+    b. If you did not, delete the `com.waterfall.youtube...` line
 
 Limitations
 --------------
-- Notification data/content is not available. For those curious, left a comment about it [here](https://github.com/Fox520/pushyy/blob/main/src/python/pushyy.py#L169)
+- Notification data/content is not available. For those curious & possible solution, left a comment about it [here](https://github.com/Fox520/pushyy/blob/main/src/python/pushyy.py#L169)
