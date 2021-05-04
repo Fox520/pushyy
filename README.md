@@ -5,7 +5,7 @@ Features
 --------------
 - Receive push notifications when your app is in the **foreground**
 - Receive push notifications when your app is in the **background** or not running
-- Run a function when notification is received when app is not running. (see [limitations](#limitations) below)
+- Run a background function when notification is received when app is not running
 - Get a device token
 - Listen for device token changes
 
@@ -22,31 +22,47 @@ Usage Overview
 from pushyy import Pushyy
 
 # Get device token
-def my_token_callback(token: str):
+def my_token_callback(token: str) -> None:
     send_to_server(token)
 
 Pushyy().get_device_token(my_token_callback)
 
 # Listen for new device token
-def new_token_callback(token: str):
+def new_token_callback(token: str) -> None:
     print(token)
 
 Pushyy().token_change_listener(new_token_callback)
 
 # Get notification data when app is in foreground
-def my_foreground_message_callback(notification_data: dict):
+def my_foreground_message_callback(notification_data: dict) -> None:
     print(notification_data)
 
 Pushyy().foreground_message_handler(my_foreground_message_callback)
 
 # Get notification data when user taps on notification from tray
-def my_notification_click_callback(notification_data: dict):
+def my_notification_click_callback(notification_data: dict) -> None:
     print(notification_data)
 
 Pushyy().notification_click_handler(my_notification_click_callback)
 
 ```
 > See `src/python/main.py` on how the UI is being updated
+
+##### Background function
+To run custom code in the background when a notification is received and your application is not running, write your code in the ```my_background_callback``` function in [python_notification_handler.py](src/python/python_notification_handler.py)
+```python
+def my_background_callback(notification_data: dict) -> None:
+    """
+    Note: Application is not visible to the user here
+    One of the things you can do here: Mark a chat message
+    as delivered by making a request to your server.
+    """
+    try:
+        # connect to server
+        pass
+    except:
+        pass
+```
 
 Set up
 --------------
@@ -82,31 +98,25 @@ Set up
 6. Create a Firebase project [here](https://console.firebase.google.com/)
     - Add an Android app and skip the steps since we already did that at
     - Download the `google-services.json`
-    - Move it to `pythonforandroid/bootstraps/common/build/` folder
+    - Move it to `pythonforandroid/bo -> Noneotstraps/common/build/` folder
 ##### Part 2
-1. Place [pushyy.py](src/python/pushyy.py) next to your `main.py`
-2. (Optional) To run a function when the application is in background or not running and notification is received:
-    - Place [python_notification_handler.py](src/python/python_notification_handler.py) next to your `main.py`
-    - Write your code in `my_background_callback()`
-3. Place [libs/](src/python/libs) in the same folder as `buildozer.spec`
-4. In your `buildozer.spec` find and set:
-```
+1. Place [pushyy.py](src/python/pushyy.py) and [python_notification_handler.py](src/python/python_notification_handler.py) next to your `main.py`
+2. Place [libs/](src/python/libs) in the same folder as `buildozer.spec`
+3. In your `buildozer.spec` find and set:
+```bash
 android.add_src = libs/
 android.gradle_dependencies = com.google.firebase:firebase-messaging,com.google.firebase:firebase-analytics,com.google.code.gson:gson:2.8.6
 p4a.source_dir = /path/to/cloned/python-for-android
 
-If you did step 2, declare the service like so:
 services = PythonNotificationHandler:python_notification_handler.py
-NB: File name must be python_notification_handler.py
+# NB: File name must be python_notification_handler.py
 ```
-5. Open `PlatformIntermediate.java` from your `libs/` folder:
-    - If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
-    - If you did not, delete the `com.waterfall.youtube...` line
+5. Open `PlatformIntermediate.java` from your `libs/` folder and replace `com.waterfall.youtube` with `your.app.packagename`
 
-6. Open `KivyFirebaseMessagingBackgroundExecutor.java` from your `libs/` folder:
-    - If you did the optional step 2, replace `com.waterfall.youtube` with `your.app.packagename`
-    - If you did not, delete the `com.waterfall.youtube...` line
+6. Open `KivyFirebaseMessagingBackgroundExecutor.java` from your `libs/` folder and replace `com.waterfall.youtube` with `your.app.packagename`
 
-Limitations
---------------
-- Notification data/content is not available. For those curious & possible solution, left a comment about it [here](https://github.com/Fox520/pushyy/blob/main/src/python/pushyy.py#L168)
+Notes
+---------
+- This module is aimed for Android. For iOS, you may consider [this](https://youtu.be/mONyhxt2KV8) video
+- Just to clarify, with [Plyer](https://github.com/kivy/plyer) you get to show local notifications, not push notifications. [Which notifications should i use, Push notification or local notification?](https://stackoverflow.com/questions/45343427/which-notifications-should-i-use-push-notification-or-local-notification)
+- Why Pushyy? First thing that came to mind `¯\_(ツ)_/¯`
