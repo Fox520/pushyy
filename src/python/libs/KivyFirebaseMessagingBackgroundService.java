@@ -53,7 +53,7 @@ public class KivyFirebaseMessagingBackgroundService extends JobIntentService {
                                   Map<String, Object> remoteMessageMap =
                                           KivyFirebaseMessagingUtils.remoteMessageToMap(remoteMessage);
                                   remoteMessageMap.put("unique_key", Math.random() + "");
-                                  PlatformIntermediate.addbackroundMessage(remoteMessageMap);
+                                  PlatformIntermediate.addbackroundMessage(remoteMessageMap, ContextHolder.getApplicationContext());
                               }
                               // End
                               latch.countDown();
