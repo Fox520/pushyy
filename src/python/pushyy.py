@@ -213,7 +213,7 @@ def process_background_messages(callback: Callable[[dict], None]):
         # Delete file since notification data is read
         os.remove(file_path)
         # Ensure old data is not passed to callback
-        for data in content:
+        for key, data in content.items():
             if use_callback:
                 data.pop("unique_key")
                 callback(data)
