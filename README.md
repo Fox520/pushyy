@@ -34,13 +34,13 @@ def new_token_callback(token: str) -> None:
 Pushyy().token_change_listener(new_token_callback)
 
 # Get notification data when app is in foreground
-def my_foreground_message_callback(notification_data: dict) -> None:
+def my_foreground_message_callback(notification_data: RemoteMessage) -> None:
     print(notification_data)
 
 Pushyy().foreground_message_handler(my_foreground_message_callback)
 
 # Get notification data when user taps on notification from tray
-def my_notification_click_callback(notification_data: dict) -> None:
+def my_notification_click_callback(notification_data: RemoteMessage) -> None:
     print(notification_data)
 
 Pushyy().notification_click_handler(my_notification_click_callback)
@@ -51,7 +51,7 @@ Pushyy().notification_click_handler(my_notification_click_callback)
 ##### Background function
 To run custom code in the background when a notification is received and your application is not running, write your code in the ```my_background_callback``` function in [python_notification_handler.py](src/python/python_notification_handler.py)
 ```python
-def my_background_callback(notification_data: dict) -> None:
+def my_background_callback(notification_data: RemoteMessage) -> None:
     """
     Note: Application is not visible to the user here
     One of the things you can do here: Mark a chat message
