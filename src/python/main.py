@@ -7,6 +7,7 @@ from kivy.lang.builder import Builder
 from kivy.properties import DictProperty
 from kivy.properties import ObjectProperty
 from pushyy import Pushyy
+from pushyy import RemoteMessage
 
 KV = """
 BoxLayout:
@@ -43,12 +44,12 @@ def my_token_callback(token):
     print(token)
 
 
-def my_foreground_callback(data):
+def my_foreground_callback(data: RemoteMessage):
     print(data)
     App.get_running_app().recent_notification_data = data
 
 
-def my_notification_click_callback(data):
+def my_notification_click_callback(data: RemoteMessage):
     print(data)
     App.get_running_app().recent_notification_data = data
 

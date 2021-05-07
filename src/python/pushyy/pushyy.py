@@ -1,6 +1,7 @@
 import os
 import json
 
+from .remote_message import RemoteMessage
 from typing import Callable
 from typing import Any
 from kivy.clock import Clock, mainthread
@@ -13,13 +14,13 @@ class Pushyy:
     __token = None
 
     def foreground_message_handler(
-        self, callback: Callable[[dict], None], interval: float = 0.5
+        self, callback: Callable[[RemoteMessage], None], interval: float = 0.5
     ) -> None:
         """Function to call when push notification is received
         and application is in the foreground
 
         Example
-        def my_foreground_callback(data: dict):
+        def my_foreground_callback(data: RemoteMessage):
             print(data)
 
         Parameters:
@@ -52,13 +53,13 @@ class Pushyy:
         else:
             self.__last_on_message_key = msg.get("unique_key")
             msg.pop("unique_key")
-            callback(msg)
+            callback(RemoteMessage(msg))
 
-    def notification_click_handler(self, callback: Callable[[dict], None]):
+    def notification_click_handler(self, callback: Callable[[RemoteMessage], None]):
         """Function to call when push notification is clicked
 
         Example
-        def my_click_callback(data: dict):
+        def my_click_callback(data: RemoteMessage):
             print(data)
 
         Parameters:
@@ -89,7 +90,7 @@ class Pushyy:
             notification_data = {}
             for key in bundle.keySet():
                 notification_data[key] = bundle.get(key)
-            self.__notification_click_callback(notification_data)
+            self.__notification_click_callback(RemoteMessage(notification_data))
 
     def get_device_token(self, callback: Callable[[str], None]) -> None:
         """Function to call when device token is retrieved
@@ -196,7 +197,6 @@ def process_background_messages(callback: Callable[[dict], None]):
 
     context = PythonService.mService.getApplicationContext()
     file_path = context.getFilesDir().getPath() + "/background_messages.json"
-
     if os.path.exists(file_path):
         """
         Reason to read from a file and not the backgroundMessages variable is that from my
@@ -216,4 +216,4 @@ def process_background_messages(callback: Callable[[dict], None]):
         for key, data in content.items():
             if use_callback:
                 data.pop("unique_key")
-                callback(data)
+                callback(RemoteMessage(data))
