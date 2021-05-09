@@ -1,6 +1,8 @@
 # pushyy
 A Python module meant to simplify working with push notifications in Kivy
 
+**Video tutorial**: https://youtu.be/8nrXsWeRG8I
+
 Features
 --------------
 - Receive push notifications when your app is in the **foreground**
