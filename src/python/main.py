@@ -46,12 +46,12 @@ def my_token_callback(token):
 
 def my_foreground_callback(data: RemoteMessage):
     print(data)
-    App.get_running_app().recent_notification_data = data
+    App.get_running_app().recent_notification_data = data.as_dict()
 
 
 def my_notification_click_callback(data: RemoteMessage):
     print(data)
-    App.get_running_app().recent_notification_data = data
+    App.get_running_app().recent_notification_data = data.as_dict()
 
 
 def new_token_callback(data):
