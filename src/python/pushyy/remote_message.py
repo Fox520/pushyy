@@ -26,8 +26,9 @@ class RemoteMessage:
             self.sent_time = push_notification.pop("google.sent_time")
             self.from_ = push_notification.pop("from")
             self.message_id = push_notification.pop("google.message_id")
+            self.ttl = push_notification.pop("google.ttl")
             # Remove the unused keys, leaving only user data
-            for e in ["collapse_key", "google.original_priority", "google.delivered_priority"]:
+            for e in ["collapse_key", "google.original_priority", "google.delivered_priority", "gcm.n.analytics_data"]:
                 push_notification.pop(e)
             self.data = push_notification
         else:
@@ -53,4 +54,3 @@ class RemoteMessage:
     
     def __repr__(self):
         return str(self.as_dict())
-    
