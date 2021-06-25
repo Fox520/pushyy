@@ -74,7 +74,7 @@ Set up
 3. Add the following:
     - Under `buildscript->dependencies` add `classpath 'com.google.gms:google-services:4.3.4'`
     - Below `apply plugin: 'com.android.application'` add `apply plugin: 'com.google.gms.google-services'`
-    - Under `dependencies` add `implementation platform('com.google.firebase:firebase-bom:X.Y.Z')` (replace XYZ with the latest version from [here](https://firebase.google.com/docs/android/learn-more#bom))
+    - Under `dependencies` add `implementation platform('com.google.firebase:firebase-bom:X.Y.Z')` (replace XYZ with the latest version from [here](https://firebase.google.com/docs/android/learn-more#bom), tested with `28.1.0`)
 4. Open the file `pythonforandroid/bootstraps/sdl2/build/templates/AndroidManifest.tmpl.xml`
 5. Before the `</application>` tag, add
 ```xml
