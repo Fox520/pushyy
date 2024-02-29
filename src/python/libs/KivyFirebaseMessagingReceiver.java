@@ -33,7 +33,10 @@ public class KivyFirebaseMessagingReceiver extends BroadcastReceiver {
         //      App in Foreground
         //   ------------------------
         if (KivyFirebaseMessagingUtils.isApplicationForeground(context)) {
-            Log.d(TAG, "Setting the foreground. BTW, title is " + remoteMessage.getNotification().getTitle());
+            Log.d(TAG, "Setting the foreground.");
+            if(remoteMessage.getNotification() != null){
+                Log.d("BTW, title is " + remoteMessage.getNotification().getTitle());
+            }
             PlatformIntermediate.setForegroundMessage(KivyFirebaseMessagingUtils.remoteMessageToMap(remoteMessage));
             return;
         }
@@ -41,7 +44,7 @@ public class KivyFirebaseMessagingReceiver extends BroadcastReceiver {
         //  |-> ---------------------
         //    App in Background/Quit
         //   ------------------------
-        Log.d(TAG, "App in Background/Quit " + remoteMessage.getNotification().getTitle());
+        Log.d(TAG, "App in Background/Quit");
 //        HashMap<String, Object> payload = new HashMap<>();
 //        payload.put("unique_key", Math.random());
 //        payload.put("payload_type", "BACKGROUND_MSG");
