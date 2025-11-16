@@ -3,6 +3,10 @@ A Python module meant to simplify working with push notifications in Kivy
 
 **Video tutorial**: https://youtu.be/8nrXsWeRG8I
 
+# **Status: Not Maintained**
+
+**Due to time constraints, this project is no longer maintained. I am not able to address issues or pull requests. Users are welcome to fork the repository.**
+
 Features
 --------------
 - Receive push notifications when your app is in the **foreground**
